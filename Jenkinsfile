@@ -1,31 +1,41 @@
 pipeline {
     agent any
+    
+    environment {
+        DOCKER_IMAGE = 'php:8.0-apache'
+    }
 
     stages {
-        stage('Checkout SCM') {
+        stage('Checkout') {
             steps {
                 checkout scm
             }
         }
-        
+
         stage('Build') {
             steps {
-                echo 'Building the application'
-                bash '-c "docker build -t simma-fit ."'
+                script {
+                    echo 'Building the application'
+                    sh 'docker build -t simma-fit .'
+                }
             }
         }
-        
+
         stage('Test') {
             steps {
-                echo 'Running tests'
-                bash '-c "docker run simma-fit test"'
+                script {
+                    echo 'Running tests'
+                    sh 'docker run --rm simma-fit phpunit tests'
+                }
             }
         }
-        
+
         stage('Deploy') {
             steps {
-                echo 'Deploying the application'
-                bash '-c "docker-compose up -d"'
+                script {
+                    echo 'Deploying the application'
+                    sh 'docker run --rm -d -p 80:80 simma-fit'
+                }
             }
         }
     }
