@@ -9,14 +9,14 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Получаем код из репозитория
-                git 'https://github.com/joni7937/simma-fit-.git'
+                git branch: 'main', url: 'https://github.com/joni7937/simma-fit-.git'
             }
         }
 
         stage('Build') {
             steps {
                 script {
-                    // Сборка Docker образа
+                    // Собираем Docker образ
                     docker.build(DOCKER_IMAGE)
                 }
             }
@@ -25,7 +25,7 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    // Пример выполнения тестов
+                    // Запуск тестов внутри Docker контейнера
                     docker.image(DOCKER_IMAGE).inside {
                         sh 'python -m unittest discover tests/'
                     }
@@ -36,7 +36,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    // Деплой Docker контейнера (например, на сервер или локально)
+                    // Деплой Docker контейнера (например, на сервер)
                     docker.image(DOCKER_IMAGE).push()
                 }
             }
