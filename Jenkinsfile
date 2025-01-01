@@ -16,8 +16,8 @@ pipeline {
             steps {
                 script {
                     echo 'Building the application'
-                    // Используем bash для выполнения команд
-                    bash 'docker build -t simma-fit .' 
+                    // Заменили sh на bash
+                    sh 'bash -c "docker build -t simma-fit ."' 
                 }
             }
         }
@@ -26,8 +26,8 @@ pipeline {
             steps {
                 script {
                     echo 'Running tests'
-                    // Используем bash для выполнения команд
-                    bash 'docker run --rm simma-fit phpunit tests'
+                    // Заменили sh на bash
+                    sh 'bash -c "docker run --rm simma-fit phpunit tests"'
                 }
             }
         }
@@ -36,8 +36,8 @@ pipeline {
             steps {
                 script {
                     echo 'Deploying the application'
-                    // Используем bash для выполнения команд
-                    bash 'docker run --rm -d -p 80:80 simma-fit'
+                    // Заменили sh на bash
+                    sh 'bash -c "docker run --rm -d -p 80:80 simma-fit"'
                 }
             }
         }
