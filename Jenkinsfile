@@ -3,14 +3,17 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Клонируем репозиторий
                 git branch: 'main', url: 'https://github.com/joni7937/simma-fit-.git'
             }
         }
-        stage('Build') {
+        stage('Build Docker Image') {
             steps {
-                // Просто выводим сообщение, чтобы убедиться, что пайплайн работает
-                echo "Repo successfully cloned!"
+                sh 'docker build -t simma-fit-image .'
+            }
+        }
+        stage('Run Docker Container') {
+            steps {
+                sh 'docker run -d -p 8080:80 --name simma-fit-container simma-fit-image'
             }
         }
     }
