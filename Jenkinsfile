@@ -1,22 +1,23 @@
 pipeline {
     agent any
-    
+
     environment {
-        DOCKER_IMAGE = 'php:8.0-apache'
+        DOCKER_IMAGE = 'simma-fit-image'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                // Получаем код из репозитория
+                git 'https://github.com/joni7937/simma-fit-.git'
             }
         }
 
         stage('Build') {
             steps {
                 script {
-                    echo 'Building the application'
-                    sh 'docker build -t simma-fit .'
+                    // Сборка Docker образа
+                    docker.build(DOCKER_IMAGE)
                 }
             }
         }
@@ -24,8 +25,10 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    echo 'Running tests'
-                    sh 'docker run --rm simma-fit phpunit tests'
+                    // Пример выполнения тестов
+                    docker.image(DOCKER_IMAGE).inside {
+                        sh 'python -m unittest discover tests/'
+                    }
                 }
             }
         }
@@ -33,8 +36,8 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    echo 'Deploying the application'
-                    sh 'docker run --rm -d -p 80:80 simma-fit'
+                    // Деплой Docker контейнера (например, на сервер или локально)
+                    docker.image(DOCKER_IMAGE).push()
                 }
             }
         }
