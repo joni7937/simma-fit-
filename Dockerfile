@@ -1,3 +1,14 @@
-FROM php:8.0-apache
+# Используем официальный Python образ
+FROM python:3.9-slim
 
-RUN apt-get update && apt-get install -y bash coreutils
+# Устанавливаем рабочую директорию
+WORKDIR /app
+
+# Копируем все файлы проекта в контейнер
+COPY . .
+
+# Устанавливаем зависимости
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Определяем команду для запуска приложения
+CMD ["python", "app.py"]
