@@ -10,14 +10,13 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("simma-fit", ".") // Указываем контекст сборки (текущая директория)
+                    dockerImage = docker.build("simma-fit", ".")
                 }
             }
         }
         stage('Deploy') {
             steps {
                 script {
-                    // Запуск контейнера для деплоя
                     sh 'docker run -d -p 80:80 simma-fit'
                 }
             }
