@@ -4,28 +4,22 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git branch: 'main', url: 'https://github.com/joni7937/simma-fit-.git'
+                git url: 'https://github.com/joni7937/simma-fit-.git'
             }
         }
         stage('Build Docker Image') {
             steps {
-                script {
-                    dockerImage = docker.build("simma-fit")
-                }
+                sh 'docker build -t simma-fit .'
             }
         }
         stage('Test') {
             steps {
-                script {
-                    sh 'docker run --rm simma-fit npm test'
-                }
+                sh 'docker run --rm simma-fit php vendor/bin/phpunit'
             }
         }
         stage('Deploy') {
             steps {
-                script {
-                    sh 'docker run -d -p 80:80 simma-fit'
-                }
+                sh 'docker run -d -p 80:80 simma-fit'
             }
         }
     }
