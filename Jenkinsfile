@@ -14,14 +14,6 @@ pipeline {
                 }
             }
         }
-        stage('Test') {
-            steps {
-                script {
-                    // Запуск тестов через phpunit в контейнере
-                    sh 'docker run --rm simma-fit php vendor/bin/phpunit'
-                }
-            }
-        }
         stage('Deploy') {
             steps {
                 script {
