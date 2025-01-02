@@ -16,12 +16,16 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh 'docker run --rm simma-fit npm test'
+                script {
+                    sh 'docker run --rm simma-fit npm test'
+                }
             }
         }
         stage('Deploy') {
             steps {
-                sh 'docker run -d -p 80:80 simma-fit'
+                script {
+                    sh 'docker run -d -p 80:80 simma-fit'
+                }
             }
         }
     }
