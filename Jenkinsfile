@@ -10,13 +10,14 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("simma-fit")
+                    dockerImage = docker.build("simma-fit", ".") // Указываем контекст сборки (текущая директория)
                 }
             }
         }
         stage('Test') {
             steps {
                 script {
+                    // Запуск тестов через phpunit в контейнере
                     sh 'docker run --rm simma-fit php vendor/bin/phpunit'
                 }
             }
@@ -24,9 +25,10 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
+                    // Запуск контейнера для деплоя
                     sh 'docker run -d -p 80:80 simma-fit'
                 }
             }
         }
     }
-
+}
