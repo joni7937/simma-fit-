@@ -1,3 +1,8 @@
+@NonCPS
+def buildDockerImage() {
+    docker.build("simma-fit", ".")
+}
+
 pipeline {
     agent any
 
@@ -10,7 +15,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("simma-fit", ".")
+                    buildDockerImage()
                 }
             }
         }
