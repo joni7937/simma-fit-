@@ -1,19 +1,27 @@
 pipeline {
     agent any
+
     stages {
-        stage('Checkout') {
+        stage('Clone Repository') {
             steps {
-                git branch: 'main', url: 'https://github.com/joni7937/simma-fit-.git'
+                git credentialsId: 'github-credentials-id', url: 'https://github.com/joni7937/simma-fit-.git'
             }
         }
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t simma-fit-image .'
+                script {
+                    dockerImage = docker.build("simma-fit")
+                }
             }
         }
-        stage('Run Docker Container') {
+        stage('Test') {
             steps {
-                sh 'docker run -d -p 8080:80 --name simma-fit-container simma-fit-image'
+                sh 'docker run --rm simma-fit npm test'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'docker run -d -p 80:80 simma-fit'
             }
         }
     }
