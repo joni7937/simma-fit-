@@ -3,7 +3,7 @@ pipeline {
     environment {
         // Переменная для хранения Docker образа
         DOCKER_IMAGE = 'my-app-image'
-        DOCKER_REGISTRY = 'my-docker-registry'
+        DOCKER_REGISTRY = 'docker.io/joni7937'
     }
     stages {
         // Этап сборки Docker-образа
