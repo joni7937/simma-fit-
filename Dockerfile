@@ -1,19 +1,20 @@
-# Используем официальный образ PHP с Apache как базовый
+# Используем официальный PHP образ с Apache
 FROM php:8.0-apache
 
-# Устанавливаем необходимые расширения PHP и зависимости
-RUN apt-get update && apt-get install -y libpng-dev libjpeg-dev libfreetype6-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd
-
-# Устанавливаем рабочую директорию внутри контейнера
+# Устанавливаем рабочую директорию
 WORKDIR /var/www/html
 
-# Копируем содержимое текущей директории в контейнер
+# Копируем код проекта в контейнер
 COPY . .
 
-# Включаем Apache mod_rewrite для перенаправления URL (если нужно)
-RUN a2enmod rewrite
+# Устанавливаем необходимые расширения PHP (если необходимо)
+RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-# Открываем порт 80 для приложения
+# Настроим права на файлы, если требуется
+RUN chown -R www-data:www-data /var/www/html
+
+# Открываем порт 80 для доступа к приложению
 EXPOSE 80
+
+# Команда для запуска Apache
+CMD ["apache2-foreground"]
