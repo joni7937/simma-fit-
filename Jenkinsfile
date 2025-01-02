@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git credentialsId: 'github-credentials-id', url: 'https://github.com/joni7937/simma-fit-.git'
+                git url: 'https://github.com/joni7937/simma-fit-.git'
             }
         }
         stage('Build Docker Image') {
